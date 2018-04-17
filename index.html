@@ -20,6 +20,15 @@ async function asyncMapSerial(array, fn) {
     return result;
 }
 
+async function asyncMapParallel(array, fn) {
+    const promises = array.map(fn);
+    const result = [];
+    for (let index = 0; index < promises.length; index++) {
+        result.push(await promises[index]);
+    }
+    return result;
+}
+
 class ImageLoader {
     constructor(urls) {
         this.urls = urls;
@@ -48,6 +57,10 @@ class ImageLoader {
     asyncSerial() {
         return asyncMapSerial(this.urls, this.getPromiseOne);
     }
+
+    asyncParallel() {
+        return asyncMapParallel(this.urls, this.getPromiseOne);
+    }
 }
 
 const canvas = document.getElementById('myCanvas');
@@ -61,7 +74,7 @@ context.fillStyle = 'black';
 context.fillText('Loading data...', 500, 350);
 
 const loader = new ImageLoader(['https://httpbin.org/image/jpeg', 'https://httpbin.org/image/png']);
-loader.asyncSerial()
+loader.asyncParallel()
     .then(result => {
         context.clearRect(0, 0, canvas.width, canvas.height);
         let offset = 100;
