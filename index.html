@@ -73,21 +73,22 @@ context.textBaseline = 'middle';
 context.fillStyle = 'black';
 context.fillText('Loading data...', 500, 350);
 
-const loader = new ImageLoader(['https://httpbin.org/image/jpeg', 'https://httpbin.org/image/png']);
-loader.asyncParallel()
-    .then(result => {
+(async function() {
+    const loader = new ImageLoader(['https://httpbin.org/image/jpeg', 'https://httpbin.org/image/png']);
+    try {
+        const result = await loader.asyncParallel();
         context.clearRect(0, 0, canvas.width, canvas.height);
         let offset = 100;
         result.forEach(element => {
             context.drawImage(element, offset, offset);
             offset += 200;
         });
-    })
-    .catch(err => {
+    } catch (err) {
         context.clearRect(0, 0, canvas.width, canvas.height);
         context.fillText('Load failed', 500, 350);
         alert(err);
-    });
+    }
+})();
 </script>
 
 </body>
