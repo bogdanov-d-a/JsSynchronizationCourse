@@ -24,7 +24,7 @@ class ImageLoader {
                 resolve(image);
             };
             image.onerror = function() {
-                reject(url);
+                reject('Failed to load ' + url);
             }
             image.src = url;
         });
@@ -55,10 +55,10 @@ loader.getPromise()
             offset += 200;
         });
     })
-    .catch(url => {
+    .catch(err => {
         context.clearRect(0, 0, canvas.width, canvas.height);
         context.fillText('Load failed', 500, 350);
-        alert('Failed to load ' + url);
+        alert(err);
     });
 </script>
 
