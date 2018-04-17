@@ -12,6 +12,14 @@ Your browser does not support the HTML5 canvas tag.
 </canvas>
 
 <script>
+async function asyncMapSerial(array, fn) {
+    const result = [];
+    for (let index = 0; index < array.length; index++) {
+        result.push(await fn(array[index]));
+    }
+    return result;
+}
+
 class ImageLoader {
     constructor(urls) {
         this.urls = urls;
@@ -36,6 +44,10 @@ class ImageLoader {
     getPromise() {
         return Promise.all(this.urls.map(this.getPromiseOne));
     }
+
+    asyncSerial() {
+        return asyncMapSerial(this.urls, this.getPromiseOne);
+    }
 }
 
 const canvas = document.getElementById('myCanvas');
@@ -49,7 +61,7 @@ context.fillStyle = 'black';
 context.fillText('Loading data...', 500, 350);
 
 const loader = new ImageLoader(['https://httpbin.org/image/jpeg', 'https://httpbin.org/image/png']);
-loader.getPromise()
+loader.asyncSerial()
     .then(result => {
         context.clearRect(0, 0, canvas.width, canvas.height);
         let offset = 100;
