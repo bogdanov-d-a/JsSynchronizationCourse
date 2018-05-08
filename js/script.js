@@ -20,7 +20,7 @@ class ImageLoader {
         this.urls = urls;
     }
 
-    getPromiseOne(url) {
+    loadOneImage(url) {
         return new Promise((resolve, reject) => {
             const image = new Image();
             image.onload = function() {
@@ -36,16 +36,16 @@ class ImageLoader {
         });
     }
 
-    getPromise() {
-        return Promise.all(this.urls.map(this.getPromiseOne));
+    loadImages() {
+        return Promise.all(this.urls.map(this.loadOneImage));
     }
 
     asyncSerial() {
-        return asyncMapSerial(this.urls, this.getPromiseOne);
+        return asyncMapSerial(this.urls, this.loadOneImage);
     }
 
     asyncParallel() {
-        return asyncMapParallel(this.urls, this.getPromiseOne);
+        return asyncMapParallel(this.urls, this.loadOneImage);
     }
 }
 
