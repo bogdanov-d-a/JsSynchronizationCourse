@@ -3,7 +3,7 @@ class ImageLoader {
         this.urls = urls;
     }
 
-    getPromiseOne(url) {
+    loadOneImage(url) {
         return new Promise((resolve, reject) => {
             const image = new Image();
             image.onload = function() {
@@ -19,8 +19,8 @@ class ImageLoader {
         });
     }
 
-    getPromise() {
-        return Promise.all(this.urls.map(this.getPromiseOne));
+    loadImages() {
+        return Promise.all(this.urls.map(this.loadOneImage));
     }
 }
 
@@ -35,7 +35,7 @@ context.fillStyle = 'black';
 context.fillText('Loading data...', 500, 350);
 
 const loader = new ImageLoader(['https://httpbin.org/image/jpeg', 'https://httpbin.org/image/png']);
-loader.getPromise()
+loader.loadImages()
     .then(result => {
         context.clearRect(0, 0, canvas.width, canvas.height);
         let offset = 100;
