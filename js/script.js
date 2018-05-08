@@ -43,11 +43,11 @@ class ImageLoader {
         return Promise.all(this.urls.map(this.loadOneImage));
     }
 
-    asyncSerial() {
+    loadImagesSerial() {
         return asyncMapSerial(this.urls, this.loadOneImage);
     }
 
-    asyncParallel() {
+    loadImagesWheelInvent() {
         return asyncMapParallel(this.urls, this.loadOneImage);
     }
 }
@@ -65,7 +65,7 @@ context.fillText('Loading data...', 500, 350);
 (async function() {
     const loader = new ImageLoader(['https://httpbin.org/image/jpeg', 'https://httpbin.org/image/png']);
     try {
-        const result = await loader.asyncParallel();
+        const result = await loader.loadImagesWheelInvent();
         context.clearRect(0, 0, canvas.width, canvas.height);
         let offset = 100;
         result.forEach(element => {
