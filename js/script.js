@@ -6,13 +6,16 @@ async function asyncMapSerial(array, fn) {
     return result;
 }
 
-async function asyncMapParallel(array, fn) {
-    const promises = array.map(fn);
+async function promiseAllWheelInvent(promises) {
     const result = [];
     for (let index = 0; index < promises.length; index++) {
         result.push(await promises[index]);
     }
     return result;
+}
+
+function asyncMapParallel(array, fn) {
+    return promiseAllWheelInvent(array.map(fn));
 }
 
 class ImageLoader {
